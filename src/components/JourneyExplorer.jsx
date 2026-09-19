@@ -182,7 +182,7 @@ export default function JourneyExplorer({
                     onClick={() => setReplayIndex(idx)}
                     className={`flex-1 p-4 rounded-xl border transition-all cursor-pointer min-w-[190px] relative ${
                       isCurrent
-                        ? "bg-indigo-100/90 dark:bg-indigo-950/80 border-indigo-600 dark:border-indigo-400 shadow-lg shadow-indigo-500/20 scale-105"
+                        ? "bg-indigo-600 text-white border-indigo-400 shadow-xl shadow-indigo-600/30 scale-105 ring-2 ring-indigo-500"
                         : isPast
                         ? "bg-[var(--bg-inner)] border-[var(--border-panel)] hover:border-indigo-500/50"
                         : "bg-[var(--bg-inner)] border-[var(--border-panel)] opacity-40"
@@ -190,33 +190,51 @@ export default function JourneyExplorer({
                   >
                     {/* Channel Tag & Time */}
                     <div className="flex items-center justify-between mb-2">
-                      <span className={`badge badge-${evt.channel.toLowerCase()}`}>
+                      <span className={`badge ${isCurrent ? "bg-white/20 text-white border-white/40 font-bold" : `badge-${evt.channel.toLowerCase()}`}`}>
                         {evt.channel}
                       </span>
-                      <span className="text-[10px] text-[var(--text-dim)] font-mono">{evt.time_display}</span>
+                      <span className={`text-[10px] font-mono ${isCurrent ? "text-indigo-100 font-bold" : "text-[var(--text-dim)]"}`}>
+                        {evt.time_display}
+                      </span>
                     </div>
 
                     {/* Event Type & Repeat Contact Highlight */}
                     <div className="flex items-center justify-between gap-1 mb-1">
-                      <h4 className="text-xs font-bold text-[var(--text-main)] line-clamp-1">{evt.event_type}</h4>
+                      <h4 className={`text-xs font-extrabold line-clamp-1 ${isCurrent ? "text-white" : "text-[var(--text-main)]"}`}>
+                        {evt.event_type}
+                      </h4>
                       {isRepeatContact && (
-                        <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-amber-500/25 text-amber-800 dark:text-amber-300 border border-amber-500/40 shrink-0 flex items-center space-x-1">
+                        <span className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded border shrink-0 flex items-center space-x-1 ${
+                          isCurrent ? "bg-amber-400 text-slate-900 border-amber-300 font-black" : "bg-amber-500/25 text-amber-800 dark:text-amber-300 border-amber-500/40"
+                        }`}>
                           <Repeat className="w-2.5 h-2.5" />
                           <span>REPEAT</span>
                         </span>
                       )}
                     </div>
 
-                    <p className="text-[11px] text-[var(--text-muted)] line-clamp-2">{evt.details}</p>
+                    <p className={`text-[11px] line-clamp-2 ${isCurrent ? "text-indigo-100 font-medium" : "text-[var(--text-muted)]"}`}>
+                      {evt.details}
+                    </p>
 
-                    <div className="mt-3 pt-2 border-t border-[var(--border-panel)] flex items-center justify-between text-[10px]">
-                      <span className={`font-semibold ${
-                        evt.status === "FAILED" || evt.status === "ESCALATED" ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400"
+                    <div className={`mt-3 pt-2 border-t flex items-center justify-between text-[10px] ${isCurrent ? "border-white/20" : "border-[var(--border-panel)]"}`}>
+                      <span className={`font-extrabold ${
+                        isCurrent
+                          ? "text-white"
+                          : evt.status === "FAILED" || evt.status === "ESCALATED"
+                          ? "text-rose-600 dark:text-rose-400"
+                          : "text-emerald-600 dark:text-emerald-400"
                       }`}>
                         {evt.status}
                       </span>
                       {evt.linked_issue_id && (
-                        <span className="text-amber-700 dark:text-amber-400 font-mono font-bold bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">{evt.linked_issue_id}</span>
+                        <span className={`font-mono font-bold px-1.5 py-0.5 rounded border ${
+                          isCurrent
+                            ? "bg-white/20 text-white border-white/30"
+                            : "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20"
+                        }`}>
+                          {evt.linked_issue_id}
+                        </span>
                       )}
                     </div>
                   </div>
