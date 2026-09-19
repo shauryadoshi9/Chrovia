@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Network, ShieldAlert } from "lucide-react";
+import React from "react";
+import { useState } from "react";
+import { Network, ShieldAlert, X, ArrowLeft } from "lucide-react";
 import { evaluateIdentityMatch } from "../engine/identityEngine";
 
-export default function IdentityPlayground() {
+export default function IdentityPlayground({ onClose }) {
   const [recordA, setRecordA] = useState({
     name: "Aarav Shah",
     email: "aarav@example.com",
@@ -24,9 +25,9 @@ export default function IdentityPlayground() {
   const evaluation = evaluateIdentityMatch(recordA, recordB);
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in relative">
       
-      {/* Title Header */}
+      {/* Title Header with Close / Return Button */}
       <div className="glass-panel p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider mb-1">
@@ -38,6 +39,19 @@ export default function IdentityPlayground() {
             Test deterministic + fuzzy signal confidence scoring and false merge prevention rules per Section 2
           </p>
         </div>
+
+        {/* Close Sandbox Action Buttons */}
+        {onClose && (
+          <div className="flex items-center space-x-2 shrink-0">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 rounded-lg bg-[var(--bg-inner)] hover:bg-[var(--bg-panel-hover)] border border-[var(--border-panel)] text-[var(--text-main)] text-xs font-bold flex items-center space-x-2 transition-all cursor-pointer shadow-sm"
+            >
+              <ArrowLeft className="w-4 h-4 text-indigo-500" />
+              <span>Close Sandbox</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Input Records Grid */}

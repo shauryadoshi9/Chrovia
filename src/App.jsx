@@ -23,7 +23,6 @@ import {
 } from "./data/mockData";
 
 export default function App() {
-  // Theme State: "dark" | "light"
   const [theme, setTheme] = useState(() => localStorage.getItem("chrovia_theme") || "dark");
 
   useEffect(() => {
@@ -35,26 +34,20 @@ export default function App() {
     setTheme(prev => (prev === "dark" ? "light" : "dark"));
   };
 
-  // Page Flow State: "landing" | "dashboard"
   const [currentPage, setCurrentPage] = useState("landing");
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  // Authenticated User Session
   const [userSession, setUserSession] = useState(null);
-
-  // Dashboard Active View Tab
   const [activeTab, setActiveTab] = useState("overview");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCustomerId, setSelectedCustomerId] = useState("1001");
 
-  // Global Platform State
   const [customers, setCustomers] = useState(INITIAL_CUSTOMERS);
   const [events, setEvents] = useState(INITIAL_EVENTS);
   const [issues, setIssues] = useState(INITIAL_ISSUES);
   const [escalations, setEscalations] = useState(INITIAL_ESCALATIONS);
   const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
 
-  // Auth Action Handlers
   const handleAuthenticate = (userData) => {
     setUserSession(userData);
     setIsAuthModalOpen(false);
@@ -78,7 +71,6 @@ export default function App() {
     setCurrentPage("dashboard");
   };
 
-  // Live Event Ingestion Handler
   const handleAddLiveEvent = (newEvent) => {
     setEvents(prev => [newEvent, ...prev]);
 
@@ -105,7 +97,6 @@ export default function App() {
     );
   };
 
-  // Render Public Landing Page
   if (currentPage === "landing") {
     return (
       <>
@@ -125,11 +116,9 @@ export default function App() {
     );
   }
 
-  // Render Main Authenticated Dashboard Workspace
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)] font-sans selection:bg-indigo-500 selection:text-white transition-colors">
       
-      {/* Top Application Header */}
       <Header
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -144,10 +133,8 @@ export default function App() {
         onToggleTheme={handleToggleTheme}
       />
 
-      {/* Main Workspace Layout (Sidebar + View Panel) */}
       <div className="flex-1 flex overflow-hidden">
         
-        {/* Navigation Sidebar */}
         <Sidebar
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -158,7 +145,6 @@ export default function App() {
           }}
         />
 
-        {/* Dynamic View Panel */}
         <main className="flex-1 p-6 overflow-y-auto max-h-[calc(100vh-60px)]">
           
           {activeTab === "overview" && (
@@ -237,7 +223,7 @@ export default function App() {
           )}
 
           {activeTab === "identity_sandbox" && (
-            <IdentityPlayground />
+            <IdentityPlayground onClose={() => setActiveTab("overview")} />
           )}
 
           {activeTab === "simulator" && (
@@ -246,7 +232,7 @@ export default function App() {
               <LiveSimulator
                 customers={customers}
                 onAddEvent={handleAddLiveEvent}
-                onClose={null}
+                onClose={() => setActiveTab("overview")}
               />
             </div>
           )}
@@ -254,7 +240,6 @@ export default function App() {
         </main>
       </div>
 
-      {/* Live Event Modal overlay */}
       {isSimulatorOpen && (
         <LiveSimulator
           customers={customers}
@@ -263,7 +248,6 @@ export default function App() {
         />
       )}
 
-      {/* Auth Modal if triggered inside dashboard */}
       {isAuthModalOpen && (
         <AuthModal
           onAuthenticate={handleAuthenticate}

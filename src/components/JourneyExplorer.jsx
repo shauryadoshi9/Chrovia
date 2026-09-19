@@ -8,7 +8,8 @@ import {
   ChevronLeft, 
   Activity, 
   Zap,
-  FastForward
+  FastForward,
+  Repeat
 } from "lucide-react";
 
 export default function JourneyExplorer({ 
@@ -172,21 +173,22 @@ export default function JourneyExplorer({
             {customerEvents.map((evt, idx) => {
               const isPast = idx <= replayIndex;
               const isCurrent = idx === replayIndex;
+              const isRepeatContact = evt.event_type === "REPEAT_CONTACT";
 
               return (
                 <React.Fragment key={evt.id}>
                   {/* Node Card */}
                   <div
                     onClick={() => setReplayIndex(idx)}
-                    className={`flex-1 p-4 rounded-xl border transition-all cursor-pointer min-w-[180px] relative ${
+                    className={`flex-1 p-4 rounded-xl border transition-all cursor-pointer min-w-[190px] relative ${
                       isCurrent
-                        ? "bg-indigo-50 dark:bg-indigo-950/80 border-indigo-500 shadow-lg shadow-indigo-500/20 scale-105"
+                        ? "bg-indigo-100/90 dark:bg-indigo-950/80 border-indigo-600 dark:border-indigo-400 shadow-lg shadow-indigo-500/20 scale-105"
                         : isPast
-                        ? "bg-[var(--bg-inner)] border-[var(--border-panel)] hover:border-indigo-500/40"
+                        ? "bg-[var(--bg-inner)] border-[var(--border-panel)] hover:border-indigo-500/50"
                         : "bg-[var(--bg-inner)] border-[var(--border-panel)] opacity-40"
                     }`}
                   >
-                    {/* Channel Tag */}
+                    {/* Channel Tag & Time */}
                     <div className="flex items-center justify-between mb-2">
                       <span className={`badge badge-${evt.channel.toLowerCase()}`}>
                         {evt.channel}
@@ -194,7 +196,17 @@ export default function JourneyExplorer({
                       <span className="text-[10px] text-[var(--text-dim)] font-mono">{evt.time_display}</span>
                     </div>
 
-                    <h4 className="text-xs font-bold text-[var(--text-main)] mb-1 line-clamp-1">{evt.event_type}</h4>
+                    {/* Event Type & Repeat Contact Highlight */}
+                    <div className="flex items-center justify-between gap-1 mb-1">
+                      <h4 className="text-xs font-bold text-[var(--text-main)] line-clamp-1">{evt.event_type}</h4>
+                      {isRepeatContact && (
+                        <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-amber-500/25 text-amber-800 dark:text-amber-300 border border-amber-500/40 shrink-0 flex items-center space-x-1">
+                          <Repeat className="w-2.5 h-2.5" />
+                          <span>REPEAT</span>
+                        </span>
+                      )}
+                    </div>
+
                     <p className="text-[11px] text-[var(--text-muted)] line-clamp-2">{evt.details}</p>
 
                     <div className="mt-3 pt-2 border-t border-[var(--border-panel)] flex items-center justify-between text-[10px]">
@@ -204,7 +216,7 @@ export default function JourneyExplorer({
                         {evt.status}
                       </span>
                       {evt.linked_issue_id && (
-                        <span className="text-amber-600 dark:text-amber-400 font-mono font-bold">{evt.linked_issue_id}</span>
+                        <span className="text-amber-700 dark:text-amber-400 font-mono font-bold bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">{evt.linked_issue_id}</span>
                       )}
                     </div>
                   </div>
