@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sparkles, Send, Bot, User, ArrowRight, ExternalLink, Activity, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { Sparkles, Send, Bot, User, ExternalLink } from "lucide-react";
 
 export default function AiAnalyst({ customers = [], events = [], issues = [], escalations = [], onSelectCustomer, onNavigateTab }) {
   const [query, setQuery] = useState("");
@@ -12,7 +12,6 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
   ]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  // Preset query list
   const presetQueries = [
     "Why did Customer 1001 (Aarav Shah) escalate and file repeat contacts?",
     "What are the top root causes for payment failure drop-offs?",
@@ -20,12 +19,10 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
     "Show me common channel-hopping sequences and cost impact."
   ];
 
-  // AI Response Generator Grounded in Dataset
   const handleSendQuery = (userQueryText) => {
     const textToSend = userQueryText || query;
     if (!textToSend.trim()) return;
 
-    // Add user message
     const newMessages = [...messages, { sender: "user", text: textToSend }];
     setMessages(newMessages);
     if (!userQueryText) setQuery("");
@@ -38,7 +35,6 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
       const lower = textToSend.toLowerCase();
 
       if (lower.includes("1001") || lower.includes("aarav")) {
-        const aaravEvents = events.filter(e => e.customer_id === "1001");
         aiResponseText = `### Journey Analysis: Customer 1001 (Aarav Shah)\n\n**Overall Friction Score:** **84 / 100 (Critical)**\n\n#### Root Cause Summary:\n1. **10:13 AM (MOBILE)**: Payment Gateway Timeout Error #504 during checkout for headphones ₹14,999.\n2. **10:20 AM (CALL CENTER)**: Contacted support regarding debited funds without order receipt (IVR Wait: 7 mins).\n3. **10:35 AM (CALL CENTER)**: Escalated to Supervisor Ananya M. due to payment hold override restriction.\n4. **11:10 AM (CHAT)**: Channel switch #3 to Live Chat inquiring about refund status.\n\n**Key Finding**: Channel hopping across 3 distinct touchpoints within 1 hour triggered an SLA breach alert **ESC-11**.`;
         citations = [
           { label: "Customer 1001 Profile", customerId: "1001", tab: "customer360" },
@@ -73,13 +69,13 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
             <Bot className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-lg font-extrabold text-white flex items-center space-x-2">
+            <h2 className="text-lg font-extrabold text-[var(--text-main)] flex items-center space-x-2">
               <span>AI Customer Journey Analyst</span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-600 dark:text-purple-300 border border-purple-500/30">
                 GEMINI GROUNDED
               </span>
             </h2>
-            <p className="text-xs text-gray-400">Natural Language Analytics with Audit Trace & Citation Links</p>
+            <p className="text-xs text-[var(--text-muted)]">Natural Language Analytics with Audit Trace & Citation Links</p>
           </div>
         </div>
       </div>
@@ -94,7 +90,7 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
             }`}
           >
             {msg.sender === "ai" && (
-              <div className="w-8 h-8 rounded-lg bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300 shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-600 dark:text-purple-300 shrink-0">
                 <Bot className="w-4 h-4" />
               </div>
             )}
@@ -102,7 +98,7 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
             <div className={`max-w-2xl p-4 rounded-2xl text-xs space-y-2 ${
               msg.sender === "user"
                 ? "bg-indigo-600 text-white rounded-tr-none shadow-md shadow-indigo-600/20"
-                : "bg-gray-900/90 border border-white/10 text-gray-200 rounded-tl-none"
+                : "bg-[var(--bg-inner)] border border-[var(--border-panel)] text-[var(--text-main)] rounded-tl-none"
             }`}>
               <div className="whitespace-pre-wrap leading-relaxed">
                 {msg.text}
@@ -110,8 +106,8 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
 
               {/* Citations / Links */}
               {msg.citations && msg.citations.length > 0 && (
-                <div className="mt-3 pt-2 border-t border-white/10 flex flex-wrap gap-2">
-                  <span className="text-[10px] text-gray-400 font-bold block w-full">Grounded Evidence Links:</span>
+                <div className="mt-3 pt-2 border-t border-[var(--border-panel)] flex flex-wrap gap-2">
+                  <span className="text-[10px] text-[var(--text-dim)] font-bold block w-full">Grounded Evidence Links:</span>
                   {msg.citations.map((c, i) => (
                     <button
                       key={i}
@@ -119,7 +115,7 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
                         if (c.customerId) onSelectCustomer(c.customerId);
                         onNavigateTab(c.tab);
                       }}
-                      className="px-2.5 py-1 rounded-md bg-indigo-500/20 hover:bg-indigo-500/40 text-indigo-300 border border-indigo-500/30 text-[11px] font-semibold flex items-center space-x-1 cursor-pointer transition-all"
+                      className="px-2.5 py-1 rounded-md bg-indigo-500/15 hover:bg-indigo-500/30 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30 text-[11px] font-semibold flex items-center space-x-1 cursor-pointer transition-all"
                     >
                       <span>{c.label}</span>
                       <ExternalLink className="w-3 h-3" />
@@ -138,7 +134,7 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
         ))}
 
         {isAnalyzing && (
-          <div className="flex items-center space-x-2 text-xs text-indigo-400 animate-pulse py-2">
+          <div className="flex items-center space-x-2 text-xs text-indigo-600 dark:text-indigo-400 animate-pulse py-2">
             <Sparkles className="w-4 h-4" />
             <span>Querying identity graph & stitching event records...</span>
           </div>
@@ -151,7 +147,7 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
           <button
             key={i}
             onClick={() => handleSendQuery(pq)}
-            className="px-3 py-1.5 rounded-lg bg-gray-900/80 hover:bg-gray-800 border border-white/10 hover:border-indigo-500/40 text-gray-300 text-xs font-medium transition-all text-left truncate max-w-xs cursor-pointer"
+            className="px-3 py-1.5 rounded-lg bg-[var(--bg-inner)] hover:bg-[var(--bg-panel-hover)] border border-[var(--border-panel)] text-[var(--text-muted)] hover:text-[var(--text-main)] text-xs font-medium transition-all text-left truncate max-w-xs cursor-pointer"
           >
             "{pq}"
           </button>
@@ -166,7 +162,7 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSendQuery()}
-          className="flex-1 bg-transparent border-none text-white placeholder-gray-500 text-xs focus:outline-none"
+          className="flex-1 bg-transparent border-none text-[var(--text-main)] placeholder-[var(--text-dim)] text-xs focus:outline-none"
         />
         <button
           onClick={() => handleSendQuery()}

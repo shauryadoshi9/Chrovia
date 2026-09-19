@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Lock, Mail, User, ShieldCheck, ArrowRight, X, Sparkles, CheckCircle2 } from "lucide-react";
+import { Lock, Mail, User, ArrowRight, X } from "lucide-react";
 
 export default function AuthModal({ onAuthenticate, onClose }) {
-  const [mode, setMode] = useState("login"); // "login" | "signup"
+  const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("analyst@chrovia.internal");
   const [password, setPassword] = useState("••••••••••••");
   const [name, setName] = useState("Aarav Shah");
@@ -28,14 +28,14 @@ export default function AuthModal({ onAuthenticate, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="glass-panel p-6 sm:p-8 max-w-md w-full space-y-6 bg-[#0F172A] border-indigo-500/40 shadow-2xl relative animate-fade-in rounded-2xl">
+    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
+      <div className="glass-panel p-6 sm:p-8 max-w-md w-full space-y-6 bg-[var(--bg-panel)] border-indigo-500/40 shadow-2xl relative animate-fade-in rounded-2xl">
         
         {/* Close Button */}
         {onClose && (
           <button
             onClick={onClose}
-            className="absolute right-4 top-4 text-gray-400 hover:text-white transition-colors cursor-pointer"
+            className="absolute right-4 top-4 text-[var(--text-dim)] hover:text-[var(--text-main)] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -48,20 +48,20 @@ export default function AuthModal({ onAuthenticate, onClose }) {
             alt="Chrovia Logo"
             className="w-14 h-14 rounded-2xl object-cover border-2 border-indigo-500/70 shadow-lg shadow-indigo-500/30 mx-auto"
           />
-          <h2 className="text-xl font-extrabold text-white">
+          <h2 className="text-xl font-extrabold text-[var(--text-main)]">
             {mode === "login" ? "Sign In to Chrovia" : "Create Analyst Account"}
           </h2>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-[var(--text-muted)]">
             Cross-Channel Customer Journey Intelligence Engine
           </p>
         </div>
 
         {/* Mode Toggle Tabs */}
-        <div className="grid grid-cols-2 p-1 bg-gray-900 rounded-xl border border-white/10 text-xs font-bold">
+        <div className="grid grid-cols-2 p-1 bg-[var(--bg-inner)] rounded-xl border border-[var(--border-panel)] text-xs font-bold">
           <button
             onClick={() => setMode("login")}
             className={`py-2 rounded-lg transition-all cursor-pointer ${
-              mode === "login" ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "text-gray-400 hover:text-white"
+              mode === "login" ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "text-[var(--text-muted)] hover:text-[var(--text-main)]"
             }`}
           >
             Sign In
@@ -69,7 +69,7 @@ export default function AuthModal({ onAuthenticate, onClose }) {
           <button
             onClick={() => setMode("signup")}
             className={`py-2 rounded-lg transition-all cursor-pointer ${
-              mode === "signup" ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "text-gray-400 hover:text-white"
+              mode === "signup" ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "text-[var(--text-muted)] hover:text-[var(--text-main)]"
             }`}
           >
             Register
@@ -78,30 +78,30 @@ export default function AuthModal({ onAuthenticate, onClose }) {
 
         {/* 1-Click Demo Presets */}
         <div className="space-y-2">
-          <span className="text-[10px] text-indigo-300 font-bold uppercase tracking-wider block">
+          <span className="text-[10px] text-indigo-600 dark:text-indigo-300 font-bold uppercase tracking-wider block">
             ⚡ Quick Demo Access Presets:
           </span>
           <div className="grid grid-cols-1 gap-2 text-xs">
             <button
               onClick={() => handlePresetLogin("Lead Journey Analyst", "Aarav Shah", "aarav@chrovia.internal")}
-              className="p-2.5 rounded-lg bg-gray-900/90 hover:bg-gray-800 border border-white/10 hover:border-indigo-500/50 text-left flex items-center justify-between transition-all cursor-pointer group"
+              className="p-2.5 rounded-lg bg-[var(--bg-inner)] hover:bg-[var(--bg-panel-hover)] border border-[var(--border-panel)] hover:border-indigo-500/50 text-left flex items-center justify-between transition-all cursor-pointer group"
             >
               <div>
-                <span className="font-bold text-white group-hover:text-indigo-300">Lead Analyst View</span>
-                <span className="text-[10px] text-gray-400 block">Identity Graph & Gemini AI Analyst</span>
+                <span className="font-bold text-[var(--text-main)] group-hover:text-indigo-600 dark:group-hover:text-indigo-300">Lead Analyst View</span>
+                <span className="text-[10px] text-[var(--text-muted)] block">Identity Graph & Gemini AI Analyst</span>
               </div>
-              <ArrowRight className="w-4 h-4 text-indigo-400 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-indigo-500 group-hover:translate-x-0.5 transition-transform" />
             </button>
 
             <button
               onClick={() => handlePresetLogin("Operations Supervisor", "Ananya M.", "ananya.m@chrovia.internal")}
-              className="p-2.5 rounded-lg bg-gray-900/90 hover:bg-gray-800 border border-white/10 hover:border-rose-500/50 text-left flex items-center justify-between transition-all cursor-pointer group"
+              className="p-2.5 rounded-lg bg-[var(--bg-inner)] hover:bg-[var(--bg-panel-hover)] border border-[var(--border-panel)] hover:border-rose-500/50 text-left flex items-center justify-between transition-all cursor-pointer group"
             >
               <div>
-                <span className="font-bold text-white group-hover:text-rose-300">Operations Supervisor View</span>
-                <span className="text-[10px] text-gray-400 block">SLA Breaches & Escalation Queue</span>
+                <span className="font-bold text-[var(--text-main)] group-hover:text-rose-600 dark:group-hover:text-rose-300">Operations Supervisor View</span>
+                <span className="text-[10px] text-[var(--text-muted)] block">SLA Breaches & Escalation Queue</span>
               </div>
-              <ArrowRight className="w-4 h-4 text-rose-400 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-rose-500 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
         </div>
@@ -110,15 +110,15 @@ export default function AuthModal({ onAuthenticate, onClose }) {
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           {mode === "signup" && (
             <div>
-              <label className="text-gray-400 block text-[10px] font-bold uppercase mb-1">Full Name</label>
+              <label className="text-[var(--text-muted)] block text-[10px] font-bold uppercase mb-1">Full Name</label>
               <div className="relative">
-                <User className="w-4 h-4 text-gray-500 absolute left-3 top-2.5" />
+                <User className="w-4 h-4 text-[var(--text-dim)] absolute left-3 top-2.5" />
                 <input
                   type="text"
                   value={name}
                   onChange={e => setName(e.target.value)}
                   required
-                  className="w-full pl-9 pr-3 py-2 bg-gray-900 border border-white/20 text-white rounded-lg focus:outline-none focus:border-indigo-500"
+                  className="w-full pl-9 pr-3 py-2 bg-[var(--bg-inner)] border border-[var(--border-panel)] text-[var(--text-main)] rounded-lg focus:outline-none focus:border-indigo-500"
                   placeholder="Enter full name"
                 />
               </div>
@@ -126,41 +126,41 @@ export default function AuthModal({ onAuthenticate, onClose }) {
           )}
 
           <div>
-            <label className="text-gray-400 block text-[10px] font-bold uppercase mb-1">Email Address</label>
+            <label className="text-[var(--text-muted)] block text-[10px] font-bold uppercase mb-1">Email Address</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-gray-500 absolute left-3 top-2.5" />
+              <Mail className="w-4 h-4 text-[var(--text-dim)] absolute left-3 top-2.5" />
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
-                className="w-full pl-9 pr-3 py-2 bg-gray-900 border border-white/20 text-white rounded-lg focus:outline-none focus:border-indigo-500"
+                className="w-full pl-9 pr-3 py-2 bg-[var(--bg-inner)] border border-[var(--border-panel)] text-[var(--text-main)] rounded-lg focus:outline-none focus:border-indigo-500"
                 placeholder="analyst@chrovia.internal"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-gray-400 block text-[10px] font-bold uppercase mb-1">Password</label>
+            <label className="text-[var(--text-muted)] block text-[10px] font-bold uppercase mb-1">Password</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-gray-500 absolute left-3 top-2.5" />
+              <Lock className="w-4 h-4 text-[var(--text-dim)] absolute left-3 top-2.5" />
               <input
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
-                className="w-full pl-9 pr-3 py-2 bg-gray-900 border border-white/20 text-white rounded-lg focus:outline-none focus:border-indigo-500"
+                className="w-full pl-9 pr-3 py-2 bg-[var(--bg-inner)] border border-[var(--border-panel)] text-[var(--text-main)] rounded-lg focus:outline-none focus:border-indigo-500"
                 placeholder="••••••••••••"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-gray-400 block text-[10px] font-bold uppercase mb-1">Platform Role</label>
+            <label className="text-[var(--text-muted)] block text-[10px] font-bold uppercase mb-1">Platform Role</label>
             <select
               value={role}
               onChange={e => setRole(e.target.value)}
-              className="w-full bg-gray-900 border border-white/20 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500 cursor-pointer"
+              className="w-full bg-[var(--bg-inner)] border border-[var(--border-panel)] text-[var(--text-main)] rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500 cursor-pointer"
             >
               <option value="Lead Journey Analyst">Lead Journey Analyst</option>
               <option value="Customer Operations Supervisor">Customer Operations Supervisor</option>
