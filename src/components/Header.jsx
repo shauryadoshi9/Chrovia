@@ -1,5 +1,5 @@
 import React from "react";
-import { Activity, ShieldCheck, Sparkles, PlusCircle, Search, Cpu, Sliders } from "lucide-react";
+import { Activity, ShieldCheck, Sparkles, PlusCircle, Search, Cpu, LogOut, Home } from "lucide-react";
 
 export default function Header({ 
   activeTab, 
@@ -7,19 +7,22 @@ export default function Header({
   searchQuery, 
   setSearchQuery, 
   onOpenSimulator, 
-  eventsCount 
+  eventsCount,
+  userSession,
+  onLogout,
+  onGoHome
 }) {
   return (
     <header className="sticky top-0 z-40 bg-[#0B0F19]/90 backdrop-blur-md border-b border-white/10 px-6 py-3 transition-all">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         
-        {/* Brand & Platform Identity */}
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-purple-600 p-0.5 shadow-lg shadow-indigo-500/20 flex items-center justify-center">
-            <div className="w-full h-full bg-[#0B0F19] rounded-[10px] flex items-center justify-center">
-              <Activity className="w-5 h-5 text-indigo-400 animate-pulse" />
-            </div>
-          </div>
+        {/* Brand & Platform Identity with Logo */}
+        <div className="flex items-center space-x-3 cursor-pointer" onClick={onGoHome}>
+          <img
+            src="/chrovia-logo.jpeg"
+            alt="Chrovia Logo"
+            className="w-10 h-10 rounded-xl object-cover border-2 border-indigo-500/60 shadow-lg shadow-indigo-500/30"
+          />
           <div>
             <div className="flex items-center space-x-2">
               <h1 className="text-xl font-black tracking-wider text-white">CHROVIA</h1>
@@ -33,7 +36,7 @@ export default function Header({
           </div>
         </div>
 
-        {/* Live Engine Status & Search Bar */}
+        {/* Search Bar */}
         <div className="flex items-center space-x-3 flex-1 max-w-xl mx-0 md:mx-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
@@ -53,8 +56,9 @@ export default function Header({
           </div>
         </div>
 
-        {/* Quick Action Buttons */}
+        {/* Quick Action Buttons & User Profile */}
         <div className="flex items-center space-x-2">
+          
           <button
             onClick={() => setActiveTab("ai_analyst")}
             className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold shadow-md shadow-indigo-600/30 transition-all cursor-pointer"
@@ -68,8 +72,32 @@ export default function Header({
             className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-semibold transition-all cursor-pointer"
           >
             <PlusCircle className="w-4 h-4" />
-            <span>Simulate Event</span>
+            <span className="hidden sm:inline">Simulate Event</span>
           </button>
+
+          {/* User Session Profile Badge */}
+          {userSession && (
+            <div className="flex items-center space-x-2 pl-2 border-l border-white/10">
+              <img
+                src={userSession.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80"}
+                alt={userSession.name}
+                className="w-8 h-8 rounded-full object-cover border border-indigo-500/50"
+              />
+              <div className="hidden xl:block text-left text-xs">
+                <span className="font-extrabold text-white block leading-tight">{userSession.name}</span>
+                <span className="text-[10px] text-indigo-300 block">{userSession.role}</span>
+              </div>
+
+              <button
+                onClick={onLogout}
+                className="p-1.5 text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-all cursor-pointer ml-1"
+                title="Sign Out / Back to Home"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
         </div>
 
       </div>

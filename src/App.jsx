@@ -12,6 +12,9 @@ import AiAnalyst from "./components/AiAnalyst";
 import IdentityPlayground from "./components/IdentityPlayground";
 import LiveSimulator from "./components/LiveSimulator";
 
+import LandingPage from "./components/LandingPage";
+import AuthModal from "./components/AuthModal";
+
 import { 
   INITIAL_CUSTOMERS, 
   INITIAL_EVENTS, 
@@ -20,22 +23,54 @@ import {
 } from "./data/mockData";
 
 export default function App() {
+  // Page Flow State: "landing" | "dashboard"
+  const [currentPage, setCurrentPage] = useState("landing");
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // Authenticated User Session
+  const [userSession, setUserSession] = useState(null);
+
+  // Dashboard Active View Tab
   const [activeTab, setActiveTab] = useState("overview");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCustomerId, setSelectedCustomerId] = useState("1001");
 
-  // Global State for live events, customers, escalations
+  // Global Platform State
   const [customers, setCustomers] = useState(INITIAL_CUSTOMERS);
   const [events, setEvents] = useState(INITIAL_EVENTS);
   const [issues, setIssues] = useState(INITIAL_ISSUES);
   const [escalations, setEscalations] = useState(INITIAL_ESCALATIONS);
   const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
 
+  // Auth Action Handlers
+  const handleAuthenticate = (userData) => {
+    setUserSession(userData);
+    setIsAuthModalOpen(false);
+    setCurrentPage("dashboard");
+  };
+
+  const handleLogout = () => {
+    setUserSession(null);
+    setCurrentPage("landing");
+  };
+
+  const handleLaunchApp = () => {
+    if (!userSession) {
+      // Set default demo session if directly launching
+      setUserSession({
+        name: "Aarav Shah",
+        email: "aarav@chrovia.internal",
+        role: "Lead Journey Analyst",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80"
+      });
+    }
+    setCurrentPage("dashboard");
+  };
+
   // Live Event Ingestion Handler
   const handleAddLiveEvent = (newEvent) => {
     setEvents(prev => [newEvent, ...prev]);
 
-    // Check if event should create an escalation or issue
     if (newEvent.event_type === "ESCALATION") {
       const newEsc = {
         escalation_id: `ESC-LIVE-${Date.now().toString().slice(-3)}`,
@@ -53,13 +88,31 @@ export default function App() {
     }
   };
 
-  // Escalation Resolution Handler
   const handleResolveEscalation = (escId) => {
     setEscalations(prev =>
       prev.map(e => (e.escalation_id === escId ? { ...e, status: "RESOLVED", sla_time_left: "RESOLVED" } : e))
     );
   };
 
+  // Render Public Landing Page
+  if (currentPage === "landing") {
+    return (
+      <>
+        <LandingPage
+          onLaunchApp={handleLaunchApp}
+          onOpenAuth={() => setIsAuthModalOpen(true)}
+        />
+        {isAuthModalOpen && (
+          <AuthModal
+            onAuthenticate={handleAuthenticate}
+            onClose={() => setIsAuthModalOpen(false)}
+          />
+        )}
+      </>
+    );
+  }
+
+  // Render Main Authenticated Dashboard Workspace
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0F19] text-gray-100 font-sans selection:bg-indigo-500 selection:text-white">
       
@@ -71,6 +124,9 @@ export default function App() {
         setSearchQuery={setSearchQuery}
         onOpenSimulator={() => setIsSimulatorOpen(true)}
         eventsCount={events.length}
+        userSession={userSession}
+        onLogout={handleLogout}
+        onGoHome={() => setCurrentPage("landing")}
       />
 
       {/* Main Workspace Layout (Sidebar + View Panel) */}
@@ -189,6 +245,14 @@ export default function App() {
           customers={customers}
           onAddEvent={handleAddLiveEvent}
           onClose={() => setIsSimulatorOpen(false)}
+        />
+      )}
+
+      {/* Auth Modal if triggered inside dashboard */}
+      {isAuthModalOpen && (
+        <AuthModal
+          onAuthenticate={handleAuthenticate}
+          onClose={() => setIsAuthModalOpen(false)}
         />
       )}
 
