@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JourneyX — Unified Customer Journey Intelligence Platform</title>
+  <meta name="description" content="JourneyX is a cross-channel identity resolution and event-stitching platform that reconstructs unified customer journeys and surfaces AI-powered insights." />
+  <meta name="keywords" content="Customer Journey Analytics, Identity Resolution, Event Stitching, Cross-Channel, AI Analytics" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <!-- SIDEBAR NAV -->
+  <nav id="sidebar" class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="14" stroke="url(#lg1)" stroke-width="2.5"/>
+          <path d="M8 16 Q12 8 16 16 Q20 24 24 16" stroke="url(#lg2)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <circle cx="8" cy="16" r="2.5" fill="#6366f1"/>
+          <circle cx="24" cy="16" r="2.5" fill="#22d3ee"/>
+          <defs>
+            <linearGradient id="lg1" x1="0" y1="0" x2="32" y2="32">
+              <stop offset="0%" stop-color="#6366f1"/>
+              <stop offset="100%" stop-color="#22d3ee"/>
+            </linearGradient>
+            <linearGradient id="lg2" x1="0" y1="0" x2="32" y2="0">
+              <stop offset="0%" stop-color="#6366f1"/>
+              <stop offset="100%" stop-color="#22d3ee"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="logo-text">JourneyX</span>
+    </div>
+
+    <div class="sidebar-section-label">PLATFORM</div>
+    <ul class="sidebar-nav" role="list">
+      <li><a href="#home" class="nav-link" id="nav-home" data-page="home" role="menuitem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+        Home
+      </a></li>
+      <li><a href="#overview" class="nav-link" id="nav-overview" data-page="overview" role="menuitem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Executive Overview
+      </a></li>
+      <li><a href="#customer360" class="nav-link" id="nav-customer360" data-page="customer360" role="menuitem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Customer 360
+      </a></li>
+      <li><a href="#journey-explorer" class="nav-link" id="nav-journey-explorer" data-page="journey-explorer" role="menuitem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+        Journey Explorer
+      </a></li>
+    </ul>
+
+    <div class="sidebar-section-label">ANALYTICS</div>
+    <ul class="sidebar-nav" role="list">
+      <li><a href="#dropoff" class="nav-link" id="nav-dropoff" data-page="dropoff" role="menuitem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/></svg>
+        Drop-Off Analysis
+      </a></li>
+      <li><a href="#escalation" class="nav-link" id="nav-escalation" data-page="escalation" role="menuitem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Escalation Center
+      </a></li>
+      <li><a href="#repeated-contact" class="nav-link" id="nav-repeated-contact" data-page="repeated-contact" role="menuitem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Repeated Contact
+      </a></li>
+      <li><a href="#churn" class="nav-link" id="nav-churn" data-page="churn" role="menuitem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Churn Intelligence
+      </a></li>
+    </ul>
+
+    <div class="sidebar-section-label">AI</div>
+    <ul class="sidebar-nav" role="list">
+      <li><a href="#ai-analyst" class="nav-link" id="nav-ai-analyst" data-page="ai-analyst" role="menuitem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        AI Journey Analyst
+        <span class="nav-badge">AI</span>
+      </a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-status">
+        <span class="status-dot pulse"></span>
+        <span>Live · 3 Active Sessions</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE TOPBAR -->
+  <header class="topbar" role="banner">
+    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Open navigation menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-logo">
+      <span class="logo-text">JourneyX</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-icon" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-dot"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content" class="main-content" role="main">
+    <!-- Pages are rendered by app.js -->
+  </main>
+
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
