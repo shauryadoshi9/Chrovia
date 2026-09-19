@@ -14,6 +14,7 @@ import LiveSimulator from "./components/LiveSimulator";
 
 import LandingPage from "./components/LandingPage";
 import AuthModal from "./components/AuthModal";
+import CustomerManageModal from "./components/CustomerManageModal";
 
 import { 
   INITIAL_CUSTOMERS, 
@@ -42,12 +43,17 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCustomerId, setSelectedCustomerId] = useState("1001");
 
+  // Global Platform State
   const [customers, setCustomers] = useState(INITIAL_CUSTOMERS);
   const [events, setEvents] = useState(INITIAL_EVENTS);
   const [issues, setIssues] = useState(INITIAL_ISSUES);
   const [escalations, setEscalations] = useState(INITIAL_ESCALATIONS);
-  const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
 
+  // Modals state
+  const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
+  const [customerModal, setCustomerModal] = useState({ isOpen: false, mode: "add", customerData: null });
+
+  // Auth Action Handlers
   const handleAuthenticate = (userData) => {
     setUserSession(userData);
     setIsAuthModalOpen(false);
@@ -71,6 +77,19 @@ export default function App() {
     setCurrentPage("dashboard");
   };
 
+  // Save Add/Edit Customer Handler
+  const handleSaveCustomer = (updatedCustomer) => {
+    if (customerModal.mode === "add") {
+      setCustomers(prev => [updatedCustomer, ...prev]);
+      setSelectedCustomerId(updatedCustomer.id);
+      setActiveTab("customer360");
+    } else {
+      setCustomers(prev => prev.map(c => (c.id === updatedCustomer.id ? updatedCustomer : c)));
+    }
+    setCustomerModal({ isOpen: false, mode: "add", customerData: null });
+  };
+
+  // Live Event Ingestion Handler
   const handleAddLiveEvent = (newEvent) => {
     setEvents(prev => [newEvent, ...prev]);
 
@@ -167,6 +186,8 @@ export default function App() {
               issues={issues}
               escalations={escalations}
               onNavigateTab={setActiveTab}
+              onOpenAddCustomer={() => setCustomerModal({ isOpen: true, mode: "add", customerData: null })}
+              onOpenEditCustomer={(cust) => setCustomerModal({ isOpen: true, mode: "edit", customerData: cust })}
             />
           )}
 
@@ -245,6 +266,15 @@ export default function App() {
           customers={customers}
           onAddEvent={handleAddLiveEvent}
           onClose={() => setIsSimulatorOpen(false)}
+        />
+      )}
+
+      {customerModal.isOpen && (
+        <CustomerManageModal
+          mode={customerModal.mode}
+          customerData={customerModal.customerData}
+          onSave={handleSaveCustomer}
+          onClose={() => setCustomerModal({ isOpen: false, mode: "add", customerData: null })}
         />
       )}
 

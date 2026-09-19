@@ -50,7 +50,7 @@ export const INITIAL_CUSTOMERS = [
     phone: "+91 96543 21098",
     loyalty_id: "LYT1003",
     account_id: "ACC-9903",
-    tier: "Platinum",
+    tier: "Platinum VIP",
     churn_risk: "ELEVATED",
     churn_score: 62,
     friction_score: 58,
@@ -87,20 +87,24 @@ export const INITIAL_CUSTOMERS = [
     phone: "+91 94449 87654",
     loyalty_id: "LYT1005",
     account_id: "ACC-9905",
-    tier: "Regular",
-    churn_risk: "LOW",
-    churn_score: 12,
-    friction_score: 15,
-    friction_band: "Low",
+    tier: "Gold VIP",
+    churn_risk: "HIGH",
+    churn_score: 78,
+    friction_score: 76,
+    friction_band: "High",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=250&q=80",
     identities: [
-      { type: "Email", value: "vikram@example.com", verified: true, strength: 0.95 }
+      { type: "Email", value: "vikram@example.com", verified: true, strength: 0.95 },
+      { type: "Phone", value: "+91 94449 87654", verified: true, strength: 0.95 },
+      { type: "Loyalty ID", value: "LYT1005", verified: true, strength: 0.90 },
+      { type: "Device Fingerprint", value: "fp_android_14_9921", verified: false, strength: 0.75 },
+      { type: "IP Address", value: "10.0.4.99 (Delhi)", verified: false, strength: 0.45 }
     ]
   }
 ];
 
 export const INITIAL_EVENTS = [
-  // Customer 1001 (Aarav Shah) events from Section 18.2 + detail
+  // Customer 1001 (Aarav Shah)
   {
     id: "EVT-1001-1",
     customer_id: "1001",
@@ -269,6 +273,91 @@ export const INITIAL_EVENTS = [
     raw_payload: { escalation_type: "Supervisor Request" },
     linked_issue_id: "ISS-503",
     linked_escalation_id: "ESC-12"
+  },
+
+  // Customer 1005 (Vikram Verma) - Complete Stitched Journey
+  {
+    id: "EVT-1005-1",
+    customer_id: "1005",
+    timestamp: "2026-09-19T11:00:00Z",
+    time_display: "11:00 AM",
+    channel: "WEB",
+    event_type: "PRODUCT_VIEW",
+    status: "COMPLETED",
+    session_id: "SES-WEB-505",
+    sentiment: "NEUTRAL",
+    details: "Viewed Smart TV 65-inch 4K OLED (Model TV-65-OLED)",
+    raw_payload: { page: "/products/tv-65-oled", amount: 89999 }
+  },
+  {
+    id: "EVT-1005-2",
+    customer_id: "1005",
+    timestamp: "2026-09-19T11:15:00Z",
+    time_display: "11:15 AM",
+    channel: "MOBILE",
+    event_type: "ADD_TO_CART",
+    status: "COMPLETED",
+    session_id: "SES-MOB-506",
+    sentiment: "POSITIVE",
+    details: "Added Smart TV 65-inch to mobile app cart",
+    raw_payload: { cart_total: 89999, items: 1 }
+  },
+  {
+    id: "EVT-1005-3",
+    customer_id: "1005",
+    timestamp: "2026-09-19T11:22:00Z",
+    time_display: "11:22 AM",
+    channel: "MOBILE",
+    event_type: "PAYMENT_FAILURE",
+    status: "FAILED",
+    session_id: "SES-MOB-506",
+    sentiment: "NEGATIVE",
+    details: "High transaction amount debit authorization failure #502",
+    raw_payload: { amount: 89999, gateway: "HDFC_PG", card: "AXIS_BANK_CREDIT" },
+    linked_issue_id: "ISS-505"
+  },
+  {
+    id: "EVT-1005-4",
+    customer_id: "1005",
+    timestamp: "2026-09-19T11:30:00Z",
+    time_display: "11:30 AM",
+    channel: "CALL_CENTER",
+    event_type: "SUPPORT_CONTACT",
+    status: "OPEN",
+    session_id: "SES-CALL-507",
+    sentiment: "VERY_NEGATIVE",
+    details: "Called hotline asking why credit card was debited ₹89,999 without order confirmation receipt",
+    raw_payload: { agent: "Suresh P.", IVR: "High Value Billing" },
+    linked_issue_id: "ISS-505"
+  },
+  {
+    id: "EVT-1005-5",
+    customer_id: "1005",
+    timestamp: "2026-09-19T11:45:00Z",
+    time_display: "11:45 AM",
+    channel: "CHAT",
+    event_type: "REPEAT_CONTACT",
+    status: "OPEN",
+    session_id: "SES-CHAT-508",
+    sentiment: "FRUSTRATED",
+    details: "Opened live chat asking for refund transaction approval ID",
+    raw_payload: { repeat_contact_number: 2, channel_hop: "CALL -> CHAT" },
+    linked_issue_id: "ISS-505"
+  },
+  {
+    id: "EVT-1005-6",
+    customer_id: "1005",
+    timestamp: "2026-09-19T12:00:00Z",
+    time_display: "12:00 PM",
+    channel: "CALL_CENTER",
+    event_type: "ESCALATION",
+    status: "ESCALATED",
+    session_id: "SES-CALL-507",
+    sentiment: "VERY_NEGATIVE",
+    details: "Escalated to L2 Operations Manager Rajesh V. due to ₹89,999 transaction block",
+    raw_payload: { manager: "Rajesh V.", SLA_breached: true },
+    linked_issue_id: "ISS-505",
+    linked_escalation_id: "ESC-15"
   }
 ];
 
@@ -320,6 +409,22 @@ export const INITIAL_ISSUES = [
     sla_breached: false,
     resolution_time: "Pending",
     root_cause: "Store POS offline preventing instant in-store cash/card refund"
+  },
+  {
+    issue_id: "ISS-505",
+    customer_id: "1005",
+    customer_name: "Vikram Verma",
+    category: "PAYMENT",
+    status: "UNRESOLVED",
+    priority: "HIGH",
+    created_at: "2026-09-19 11:22 AM",
+    age_hours: 1.5,
+    channel_path: ["MOBILE", "CALL_CENTER", "CHAT"],
+    repeat_contact_count: 2,
+    escalated: true,
+    sla_breached: true,
+    resolution_time: "> SLA",
+    root_cause: "High value transaction debit hold error ₹89,999"
   }
 ];
 
@@ -347,6 +452,18 @@ export const INITIAL_ESCALATIONS = [
     assigned_to: "Vikram R. (Store Manager)",
     timestamp: "2026-09-19 11:45 AM",
     sla_time_left: "1h 15m"
+  },
+  {
+    escalation_id: "ESC-15",
+    issue_id: "ISS-505",
+    customer_id: "1005",
+    customer_name: "Vikram Verma",
+    reason: "High transaction debit hold (₹89,999) + 2 channel hopping contacts",
+    severity: "HIGH",
+    status: "ACTIVE_INVESTIGATION",
+    assigned_to: "Rajesh V. (L2 Operations Manager)",
+    timestamp: "2026-09-19 12:00 PM",
+    sla_time_left: "EXPIRED (-15m)"
   }
 ];
 

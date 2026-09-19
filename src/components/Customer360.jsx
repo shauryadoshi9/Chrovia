@@ -9,7 +9,8 @@ import {
   AlertCircle, 
   Activity, 
   ChevronDown,
-  Sparkles
+  UserPlus,
+  Edit3
 } from "lucide-react";
 import { calculateJourneyFriction } from "../engine/frictionEngine";
 
@@ -20,7 +21,9 @@ export default function Customer360({
   events = [], 
   issues = [], 
   escalations = [],
-  onNavigateTab
+  onNavigateTab,
+  onOpenAddCustomer,
+  onOpenEditCustomer
 }) {
   const currentCustomer = customers.find(c => c.id === selectedCustomerId) || customers[0];
 
@@ -36,27 +39,49 @@ export default function Customer360({
       {/* Customer Selector & Profile Header Card */}
       <div className="glass-panel p-6 space-y-6">
         
-        {/* Selector Row */}
+        {/* Selector Row with Add / Edit Controls */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border-panel)]">
           <div className="flex items-center space-x-3">
             <User className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
             <h2 className="text-lg font-extrabold text-[var(--text-main)]">Unified Customer 360 View</h2>
           </div>
 
-          {/* Customer Dropdown */}
-          <div className="relative min-w-[240px]">
-            <select
-              value={currentCustomer?.id}
-              onChange={(e) => onSelectCustomer(e.target.value)}
-              className="w-full bg-[var(--bg-inner)] border border-[var(--border-panel)] text-[var(--text-main)] text-xs font-semibold rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500 cursor-pointer appearance-none pr-8"
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Customer Dropdown */}
+            <div className="relative min-w-[220px]">
+              <select
+                value={currentCustomer?.id}
+                onChange={(e) => onSelectCustomer(e.target.value)}
+                className="w-full bg-[var(--bg-inner)] border border-[var(--border-panel)] text-[var(--text-main)] text-xs font-semibold rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500 cursor-pointer appearance-none pr-8"
+              >
+                {customers.map(c => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} (ID: {c.id} - {c.churn_risk} Risk)
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-4 h-4 text-[var(--text-dim)] absolute right-2.5 top-2.5 pointer-events-none" />
+            </div>
+
+            {/* Edit Selected Customer Button */}
+            <button
+              onClick={() => onOpenEditCustomer(currentCustomer)}
+              className="px-3 py-2 rounded-lg bg-[var(--bg-inner)] hover:bg-[var(--bg-panel-hover)] border border-[var(--border-panel)] text-[var(--text-main)] text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer"
+              title="Edit Name, Email, Phone, Loyalty ID & Identity Graph"
             >
-              {customers.map(c => (
-                <option key={c.id} value={c.id}>
-                  {c.name} (ID: {c.id} - {c.churn_risk} Risk)
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-4 h-4 text-[var(--text-dim)] absolute right-2.5 top-2.5 pointer-events-none" />
+              <Edit3 className="w-3.5 h-3.5 text-indigo-500" />
+              <span>Edit Profile</span>
+            </button>
+
+            {/* Add New Customer Button */}
+            <button
+              onClick={onOpenAddCustomer}
+              className="px-3.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer shadow-md shadow-indigo-600/30"
+              title="Add Brand New Customer Profile"
+            >
+              <UserPlus className="w-3.5 h-3.5" />
+              <span>＋ Add Customer</span>
+            </button>
           </div>
         </div>
 
@@ -252,11 +277,13 @@ export default function Customer360({
                 Deterministic & Fuzzy link trace for customer #{currentCustomer?.id}
               </p>
             </div>
+            
             <button
-              onClick={() => onNavigateTab("identity_sandbox")}
-              className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
+              onClick={() => onOpenEditCustomer(currentCustomer)}
+              className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline flex items-center space-x-1"
             >
-              Open Resolution Engine Sandbox →
+              <Edit3 className="w-3.5 h-3.5" />
+              <span>Manage Identity Nodes →</span>
             </button>
           </div>
 
