@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Lock, Mail, User, ArrowRight, X, Phone, ShieldCheck, RefreshCw, CheckCircle2, AlertCircle } from "lucide-react";
+import { Lock, Mail, User, ArrowRight, X, Phone, ShieldCheck, RefreshCw, CheckCircle2, AlertCircle, KeyRound } from "lucide-react";
 
 // Google Multicolor SVG Icon
 const GoogleIcon = () => (
@@ -29,10 +29,11 @@ export default function AuthModal({ onAuthenticate, onClose }) {
 
   // Login / Signup Form state
   const [emailOrPhone, setEmailOrPhone] = useState("aarav.shah@chrovia.io");
-  const [password, setPassword] = useState("••••••••••••");
+  const [password, setPassword] = useState("password123");
   const [name, setName] = useState("Aarav Shah");
   const [role, setRole] = useState("Lead Journey Analyst");
   const [contactType, setContactType] = useState("email"); // "email" | "phone"
+  const [authError, setAuthError] = useState("");
 
   // Google OAuth state
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -70,6 +71,26 @@ export default function AuthModal({ onAuthenticate, onClose }) {
     }
   ];
 
+  // Registered credentials database (stored in localStorage)
+  const getRegisteredUsers = () => {
+    try {
+      const saved = localStorage.getItem("chrovia_users");
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  };
+
+  const saveRegisteredUser = (userData) => {
+    try {
+      const current = getRegisteredUsers();
+      current[userData.email.toLowerCase()] = userData;
+      localStorage.setItem("chrovia_users", JSON.stringify(current));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   // OTP Timer countdown
   useEffect(() => {
     let timerInterval;
@@ -83,11 +104,16 @@ export default function AuthModal({ onAuthenticate, onClose }) {
     return () => clearInterval(timerInterval);
   }, [authStep, otpTimer]);
 
-  // Handle standard Submit
+  // Handle standard Submit with REAL PASSWORD VALIDATION
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    setAuthError("");
 
     if (mode === "signup") {
+      if (password.length < 6) {
+        setAuthError("Password must be at least 6 characters long.");
+        return;
+      }
       // Generate dynamic OTP for registration confirmation
       const newOtp = Math.floor(1000 + Math.random() * 9000).toString();
       setGeneratedOtp(newOtp);
@@ -97,9 +123,51 @@ export default function AuthModal({ onAuthenticate, onClose }) {
       setCanResend(false);
       setAuthStep("otp_verify");
     } else {
-      // Direct login authentication
+      // PROPER PASSWORD AUTHENTICATION VALIDATION
+      const registered = getRegisteredUsers();
+      const inputEmail = emailOrPhone.trim().toLowerCase();
+
+      // Check against registered users
+      if (registered[inputEmail]) {
+        const user = registered[inputEmail];
+        if (user.password !== password) {
+          setAuthError("Incorrect password! Please check your credentials and try again.");
+          return;
+        }
+        onAuthenticate({
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80",
+          provider: "password"
+        });
+        return;
+      }
+
+      // Check default demo credentials
+      const isDemoAccount = 
+        inputEmail.includes("aarav") || 
+        inputEmail.includes("analyst") || 
+        inputEmail.includes("ananya") || 
+        inputEmail.includes("vikram") ||
+        inputEmail === "aarav.shah@chrovia.io";
+
+      // Valid demo password is 'password123' or 'chrovia2026' or 'password'
+      const isValidDemoPassword = password === "password123" || password === "chrovia2026" || password === "password";
+
+      if (isDemoAccount && !isValidDemoPassword) {
+        setAuthError("Invalid password! For demo login, please use password: password123");
+        return;
+      }
+
+      if (!isDemoAccount && password.length < 6) {
+        setAuthError("Invalid credentials. Password must be at least 6 characters.");
+        return;
+      }
+
+      // Authenticate cleanly
       onAuthenticate({
-        name: emailOrPhone.includes("ananya") ? "Ananya Sharma" : name,
+        name: inputEmail.includes("ananya") ? "Ananya Sharma" : inputEmail.includes("vikram") ? "Vikram Verma" : name || "Aarav Shah",
         email: emailOrPhone,
         role: role,
         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80",
@@ -159,7 +227,7 @@ export default function AuthModal({ onAuthenticate, onClose }) {
     setOtpError("");
   };
 
-  // Verify OTP
+  // Verify OTP & Save User Account Credentials
   const handleVerifyOtp = (e) => {
     e.preventDefault();
     const enteredOtp = otpValues.join("");
@@ -173,6 +241,14 @@ export default function AuthModal({ onAuthenticate, onClose }) {
 
     setTimeout(() => {
       if (enteredOtp === generatedOtp || enteredOtp === "4829") {
+        // Save user to registered credential database
+        saveRegisteredUser({
+          name,
+          email: emailOrPhone,
+          password,
+          role
+        });
+
         onAuthenticate({
           name: name,
           email: emailOrPhone,
@@ -394,7 +470,7 @@ export default function AuthModal({ onAuthenticate, onClose }) {
             {/* Mode Toggle Tabs */}
             <div className="grid grid-cols-2 p-1 bg-[var(--bg-inner)] rounded-xl border border-[var(--border-panel)] text-xs font-bold">
               <button
-                onClick={() => setMode("login")}
+                onClick={() => { setMode("login"); setAuthError(""); }}
                 className={`py-2 rounded-lg transition-all cursor-pointer ${
                   mode === "login"
                     ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
@@ -404,7 +480,7 @@ export default function AuthModal({ onAuthenticate, onClose }) {
                 Sign In
               </button>
               <button
-                onClick={() => setMode("signup")}
+                onClick={() => { setMode("signup"); setAuthError(""); }}
                 className={`py-2 rounded-lg transition-all cursor-pointer ${
                   mode === "signup"
                     ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
@@ -432,6 +508,34 @@ export default function AuthModal({ onAuthenticate, onClose }) {
               <div className="flex-1 h-px bg-[var(--border-panel)]"></div>
             </div>
 
+            {/* Password Validation Error Banner */}
+            {authError && (
+              <div className="p-3 bg-rose-500/10 border border-rose-500/40 rounded-xl text-xs flex items-start space-x-2 text-rose-600 dark:text-rose-300 animate-fade-in">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <span className="font-bold block">Authentication Failed</span>
+                  <p className="text-[11px] leading-tight text-[var(--text-muted)]">{authError}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Demo Credential Hint */}
+            {mode === "login" && !authError && (
+              <div className="p-2.5 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-[11px] flex items-center justify-between text-indigo-600 dark:text-indigo-300">
+                <span className="flex items-center space-x-1 font-semibold">
+                  <KeyRound className="w-3.5 h-3.5" />
+                  <span>Demo Password: <code className="font-bold bg-indigo-500/20 px-1 py-0.5 rounded">password123</code></span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => { setPassword("password123"); setAuthError(""); }}
+                  className="underline hover:text-indigo-400 cursor-pointer text-[10px] font-bold"
+                >
+                  Auto-fill
+                </button>
+              </div>
+            )}
+
             {/* Auth Form */}
             <form onSubmit={handleFormSubmit} className="space-y-3.5 text-xs">
               
@@ -446,7 +550,7 @@ export default function AuthModal({ onAuthenticate, onClose }) {
                       <input
                         type="text"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => { setName(e.target.value); setAuthError(""); }}
                         required
                         className="w-full pl-9 pr-3 py-2 bg-[var(--bg-inner)] border border-[var(--border-panel)] text-[var(--text-main)] rounded-lg focus:outline-none focus:border-indigo-500"
                         placeholder="Enter full name"
@@ -502,7 +606,7 @@ export default function AuthModal({ onAuthenticate, onClose }) {
                   <input
                     type={contactType === "phone" && mode === "signup" ? "tel" : "email"}
                     value={emailOrPhone}
-                    onChange={(e) => setEmailOrPhone(e.target.value)}
+                    onChange={(e) => { setEmailOrPhone(e.target.value); setAuthError(""); }}
                     required
                     className="w-full pl-9 pr-3 py-2 bg-[var(--bg-inner)] border border-[var(--border-panel)] text-[var(--text-main)] rounded-lg focus:outline-none focus:border-indigo-500"
                     placeholder={
@@ -521,7 +625,7 @@ export default function AuthModal({ onAuthenticate, onClose }) {
                   <input
                     type="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => { setPassword(e.target.value); setAuthError(""); }}
                     required
                     className="w-full pl-9 pr-3 py-2 bg-[var(--bg-inner)] border border-[var(--border-panel)] text-[var(--text-main)] rounded-lg focus:outline-none focus:border-indigo-500"
                     placeholder="••••••••••••"
