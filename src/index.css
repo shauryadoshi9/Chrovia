@@ -1,21 +1,87 @@
 @import "tailwindcss";
 
+/* Dark Theme Default Tokens */
 :root {
   --bg-main: #0B0F19;
-  --bg-card: rgba(17, 24, 39, 0.7);
-  --bg-card-hover: rgba(31, 41, 55, 0.8);
-  --border-card: rgba(255, 255, 255, 0.08);
-  --border-accent: rgba(99, 102, 241, 0.3);
+  --bg-panel: rgba(17, 24, 39, 0.7);
+  --bg-panel-hover: rgba(31, 41, 55, 0.8);
+  --bg-inner: rgba(15, 23, 42, 0.8);
+  --border-panel: rgba(255, 255, 255, 0.1);
+  --border-accent: rgba(99, 102, 241, 0.4);
+  
+  --text-main: #F9FAFB;
+  --text-muted: #9CA3AF;
+  --text-dim: #6B7280;
+  
   --primary: #6366F1;
+  --primary-hover: #4F46E5;
   --primary-glow: rgba(99, 102, 241, 0.4);
   --secondary: #06B6D4;
   --success: #10B981;
   --warning: #F59E0B;
   --danger: #F43F5E;
-  --purple: #8B5CF6;
-  --text-main: #F9FAFB;
-  --text-muted: #9CA3AF;
-  --text-dim: #6B7280;
+
+  --badge-web-bg: rgba(59, 130, 246, 0.15);
+  --badge-web-text: #60A5FA;
+  --badge-web-border: rgba(59, 130, 246, 0.3);
+
+  --badge-mobile-bg: rgba(168, 85, 247, 0.15);
+  --badge-mobile-text: #C084FC;
+  --badge-mobile-border: rgba(168, 85, 247, 0.3);
+
+  --badge-call-bg: rgba(245, 158, 11, 0.15);
+  --badge-call-text: #FBBF24;
+  --badge-call-border: rgba(245, 158, 11, 0.3);
+
+  --badge-store-bg: rgba(16, 185, 129, 0.15);
+  --badge-store-text: #34D399;
+  --badge-store-border: rgba(16, 185, 129, 0.3);
+
+  --badge-chat-bg: rgba(6, 182, 212, 0.15);
+  --badge-chat-text: #22D3EE;
+  --badge-chat-border: rgba(6, 182, 212, 0.3);
+}
+
+/* Light Theme Tokens */
+[data-theme="light"] {
+  --bg-main: #F8FAFC;
+  --bg-panel: rgba(255, 255, 255, 0.95);
+  --bg-panel-hover: #FFFFFF;
+  --bg-inner: #F1F5F9;
+  --border-panel: rgba(0, 0, 0, 0.1);
+  --border-accent: rgba(99, 102, 241, 0.4);
+
+  --text-main: #0F172A;
+  --text-muted: #334155;
+  --text-dim: #64748B;
+
+  --primary: #4F46E5;
+  --primary-hover: #4338CA;
+  --primary-glow: rgba(79, 70, 229, 0.2);
+  --secondary: #0891B2;
+  --success: #059669;
+  --warning: #D97706;
+  --danger: #E11D48;
+
+  --badge-web-bg: #EFF6FF;
+  --badge-web-text: #1D4ED8;
+  --badge-web-border: #BFDBFE;
+
+  --badge-mobile-bg: #F3E8FF;
+  --badge-mobile-text: #7E22CE;
+  --badge-mobile-border: #E9D5FF;
+
+  --badge-call-bg: #FEF3C7;
+  --badge-call-text: #B45309;
+  --badge-call-border: #FDE68A;
+
+  --badge-store-bg: #D1FAE5;
+  --badge-store-text: #047857;
+  --badge-store-border: #A7F3D0;
+
+  --badge-chat-bg: #CFFAFE;
+  --badge-chat-text: #0E7490;
+  --badge-chat-border: #A5F3FC;
 }
 
 body {
@@ -23,11 +89,16 @@ body {
   padding: 0;
   background-color: var(--bg-main);
   color: var(--text-main);
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light Mode Background Grid Pattern */
+[data-theme="light"] body {
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 75%, rgba(6, 182, 212, 0.06) 0%, transparent 40%);
+    radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(6, 182, 212, 0.05) 0%, transparent 40%);
   background-attachment: fixed;
 }
 
@@ -37,51 +108,58 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--bg-main);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.3);
+  background: var(--border-accent);
   border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.6);
 }
 
 /* Glassmorphism Cards */
 .glass-panel {
-  background: var(--bg-card);
+  background: var(--bg-panel);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-card);
+  border: 1px solid var(--border-panel);
   border-radius: 12px;
   transition: all 0.25s ease;
 }
 
+[data-theme="light"] .glass-panel {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
 .glass-panel:hover {
-  border-color: rgba(99, 102, 241, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border-color: var(--border-accent);
 }
 
-.glass-panel-active {
-  background: rgba(30, 41, 59, 0.85);
-  border-color: var(--primary);
-  box-shadow: 0 0 15px var(--primary-glow);
+[data-theme="light"] .glass-panel:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
 }
 
-/* Glowing text & borders */
-.text-gradient {
-  background: linear-gradient(135deg, #818CF8 0%, #38BDF8 50%, #C084FC 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Text & Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
 }
 
-.glow-primary {
-  box-shadow: 0 0 20px var(--primary-glow);
-}
+.badge-web { background: var(--badge-web-bg); color: var(--badge-web-text); border: 1px solid var(--badge-web-border); }
+.badge-mobile { background: var(--badge-mobile-bg); color: var(--badge-mobile-text); border: 1px solid var(--badge-mobile-border); }
+.badge-call_center { background: var(--badge-call-bg); color: var(--badge-call-text); border: 1px solid var(--badge-call-border); }
+.badge-store { background: var(--badge-store-bg); color: var(--badge-store-text); border: 1px solid var(--badge-store-border); }
+.badge-chat { background: var(--badge-chat-bg); color: var(--badge-chat-text); border: 1px solid var(--badge-chat-border); }
 
-.glow-danger {
-  box-shadow: 0 0 20px rgba(244, 63, 94, 0.4);
-}
+/* Friction score bands */
+.friction-low { color: #059669; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); }
+.friction-moderate { color: #2563EB; background: rgba(37, 99, 235, 0.12); border: 1px solid rgba(37, 99, 235, 0.3); }
+.friction-elevated { color: #D97706; background: rgba(217, 119, 6, 0.12); border: 1px solid rgba(217, 119, 6, 0.3); }
+.friction-high { color: #EA580C; background: rgba(234, 88, 12, 0.12); border: 1px solid rgba(234, 88, 12, 0.3); }
+.friction-critical { color: #E11D48; background: rgba(225, 29, 72, 0.15); border: 1px solid rgba(225, 29, 72, 0.4); }
 
 /* Status Pulse Indicators */
 .pulse-live {
@@ -95,68 +173,10 @@ body {
 }
 
 @keyframes pulse-green {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-  }
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
-  }
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-  }
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
-
-.pulse-warning {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #F59E0B;
-  animation: pulse-amber 2s infinite;
-}
-
-@keyframes pulse-amber {
-  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
-  70% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
-}
-
-/* Timeline nodes */
-.timeline-line {
-  position: absolute;
-  left: 20px;
-  top: 30px;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(to bottom, var(--primary), rgba(99, 102, 241, 0.1));
-}
-
-/* Custom badges */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.15rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.025em;
-}
-
-.badge-web { background: rgba(59, 130, 246, 0.15); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.3); }
-.badge-mobile { background: rgba(168, 85, 247, 0.15); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.3); }
-.badge-call_center { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
-.badge-store { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
-.badge-chat { background: rgba(6, 182, 212, 0.15); color: #22D3EE; border: 1px solid rgba(6, 182, 212, 0.3); }
-
-/* Friction score bands */
-.friction-low { color: #34D399; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); }
-.friction-moderate { color: #60A5FA; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); }
-.friction-elevated { color: #FBBF24; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); }
-.friction-high { color: #F97316; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); }
-.friction-critical { color: #F43F5E; background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.4); }
 
 /* Animations */
 @keyframes fadeIn {

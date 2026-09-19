@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import ExecutiveOverview from "./components/ExecutiveOverview";
@@ -23,6 +23,18 @@ import {
 } from "./data/mockData";
 
 export default function App() {
+  // Theme State: "dark" | "light"
+  const [theme, setTheme] = useState(() => localStorage.getItem("chrovia_theme") || "dark");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("chrovia_theme", theme);
+  }, [theme]);
+
+  const handleToggleTheme = () => {
+    setTheme(prev => (prev === "dark" ? "light" : "dark"));
+  };
+
   // Page Flow State: "landing" | "dashboard"
   const [currentPage, setCurrentPage] = useState("landing");
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -56,7 +68,6 @@ export default function App() {
 
   const handleLaunchApp = () => {
     if (!userSession) {
-      // Set default demo session if directly launching
       setUserSession({
         name: "Aarav Shah",
         email: "aarav@chrovia.internal",
@@ -101,6 +112,8 @@ export default function App() {
         <LandingPage
           onLaunchApp={handleLaunchApp}
           onOpenAuth={() => setIsAuthModalOpen(true)}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
         />
         {isAuthModalOpen && (
           <AuthModal
@@ -114,7 +127,7 @@ export default function App() {
 
   // Render Main Authenticated Dashboard Workspace
   return (
-    <div className="min-h-screen flex flex-col bg-[#0B0F19] text-gray-100 font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)] font-sans selection:bg-indigo-500 selection:text-white transition-colors">
       
       {/* Top Application Header */}
       <Header
@@ -127,6 +140,8 @@ export default function App() {
         userSession={userSession}
         onLogout={handleLogout}
         onGoHome={() => setCurrentPage("landing")}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
       />
 
       {/* Main Workspace Layout (Sidebar + View Panel) */}
@@ -227,7 +242,7 @@ export default function App() {
 
           {activeTab === "simulator" && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold text-white">Live Event Generator Engine</h2>
+              <h2 className="text-xl font-bold text-[var(--text-main)]">Live Event Generator Engine</h2>
               <LiveSimulator
                 customers={customers}
                 onAddEvent={handleAddLiveEvent}
