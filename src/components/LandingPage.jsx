@@ -44,7 +44,7 @@ export default function LandingPage({ onLaunchApp, onOpenAuth, theme, onToggleTh
     },
     {
       icon: Sparkles,
-      title: "Gemini AI Customer Analyst",
+      title: "Chrovia AI Customer Analyst",
       desc: "Conversational RAG assistant grounded in live platform identity graphs and normalized event streams with audit evidence links.",
       color: "text-purple-600 dark:text-purple-400",
       bg: "bg-purple-500/10 border-purple-500/30"
@@ -73,7 +73,7 @@ export default function LandingPage({ onLaunchApp, onOpenAuth, theme, onToggleTh
     { name: "Escalation Center", desc: "Supervisor Incident Queue", icon: AlertTriangle },
     { name: "Repeated Contact", desc: "Channel Hopping & Cost Impact", icon: Repeat },
     { name: "Churn Intelligence", desc: "Risk Radar & Retention Actions", icon: ShieldAlert },
-    { name: "AI Journey Analyst", desc: "Gemini Natural Language Queries", icon: Sparkles }
+    { name: "AI Journey Analyst", desc: "AI Natural Language Queries", icon: Sparkles }
   ];
 
   return (
@@ -221,7 +221,7 @@ export default function LandingPage({ onLaunchApp, onOpenAuth, theme, onToggleTh
 
               <div className="p-4 rounded-xl bg-[var(--bg-panel)] border border-[var(--border-panel)] space-y-2">
                 <span className="text-[10px] text-purple-600 dark:text-purple-400 font-bold uppercase">AI Grounded RAG</span>
-                <h4 className="text-sm font-bold text-purple-600 dark:text-purple-300">Gemini Journey Analyst</h4>
+                <h4 className="text-sm font-bold text-purple-600 dark:text-purple-300">Chrovia AI Journey Analyst</h4>
                 <p className="text-xs text-[var(--text-muted)] italic">"Why did Customer 1001 escalate?"</p>
                 <div className="pt-2 flex items-center justify-between text-[11px] text-indigo-600 dark:text-indigo-300 font-semibold">
                   <span>Grounded in 6 timeline records</span>

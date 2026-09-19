@@ -86,7 +86,7 @@ export default function Sidebar({ activeTab, setActiveTab, counts = {}, onOpenAd
       <div className="p-3 rounded-lg bg-[var(--bg-inner)] border border-[var(--border-panel)] text-xs">
         <div className="flex items-center space-x-2 text-indigo-600 dark:text-indigo-300 font-bold mb-1">
           <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-          <span>Gemini Grounded RAG</span>
+          <span>Chrovia AI Analyst Engine</span>
         </div>
         <p className="text-[11px] text-[var(--text-dim)] leading-tight">
           Active session identity graph grounded with 100% data auditability.

@@ -6,7 +6,7 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
   const [messages, setMessages] = useState([
     {
       sender: "ai",
-      text: "Hello! I am your **AI Customer Journey Analyst**, powered by Gemini and grounded in Chrovia's real-time identity graphs and normalized event stream.\n\nHow can I help you analyze journey friction, customer escalations, or drop-off causes today?",
+      text: "Hello! I am your **Chrovia AI Customer Journey Analyst**, grounded in Chrovia's real-time identity graphs and normalized event stream.\n\nHow can I help you analyze journey friction, customer escalations, or drop-off causes today?",
       citations: []
     }
   ]);
@@ -72,7 +72,7 @@ export default function AiAnalyst({ customers = [], events = [], issues = [], es
             <h2 className="text-lg font-extrabold text-[var(--text-main)] flex items-center space-x-2">
               <span>AI Customer Journey Analyst</span>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-600 dark:text-purple-300 border border-purple-500/30">
-                GEMINI GROUNDED
+                CHROVIA AI ENGINE
               </span>
             </h2>
             <p className="text-xs text-[var(--text-muted)]">Natural Language Analytics with Audit Trace & Citation Links</p>

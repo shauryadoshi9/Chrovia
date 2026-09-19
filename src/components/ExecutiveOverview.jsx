@@ -42,7 +42,7 @@ export default function ExecutiveOverview({
           </div>
           <h2 className="text-2xl font-black text-[var(--text-main)]">Cross-Channel Customer Journey Intelligence</h2>
           <p className="text-xs text-[var(--text-muted)] mt-1 max-w-2xl">
-            Unified cross-channel event normalization, hybrid identity resolution, friction scoring, and Gemini AI analyst grounding.
+            Unified cross-channel event normalization, hybrid identity resolution, friction scoring, and Chrovia AI analyst grounding.
           </p>
         </div>
 
