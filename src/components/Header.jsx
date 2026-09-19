@@ -1,5 +1,5 @@
 import React from "react";
-import { Activity, ShieldCheck, Sparkles, PlusCircle, Search, Cpu, LogOut, Sun, Moon } from "lucide-react";
+import { Activity, ShieldCheck, Sparkles, PlusCircle, Search, Cpu, LogOut, Sun, Moon, UserPlus } from "lucide-react";
 
 export default function Header({ 
   activeTab, 
@@ -7,6 +7,7 @@ export default function Header({
   searchQuery, 
   setSearchQuery, 
   onOpenSimulator, 
+  onOpenAddCustomer,
   eventsCount,
   userSession,
   onLogout,
@@ -74,20 +75,31 @@ export default function Header({
             )}
           </button>
 
+          {/* Add Customer Button */}
           <button
-            onClick={() => setActiveTab("ai_analyst")}
-            className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold shadow-md shadow-indigo-600/20 transition-all cursor-pointer"
+            onClick={onOpenAddCustomer}
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md shadow-indigo-600/20 transition-all cursor-pointer"
+            title="Add New Customer Profile"
           >
-            <Sparkles className="w-4 h-4" />
-            <span className="hidden sm:inline">AI Journey Analyst</span>
+            <UserPlus className="w-4 h-4" />
+            <span className="hidden sm:inline">＋ Add Customer</span>
           </button>
 
+          {/* Simulate Event Button */}
           <button
             onClick={onOpenSimulator}
             className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 text-xs font-semibold transition-all cursor-pointer"
           >
             <PlusCircle className="w-4 h-4" />
             <span className="hidden sm:inline">Simulate Event</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("ai_analyst")}
+            className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold shadow-md shadow-indigo-600/20 transition-all cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span className="hidden sm:inline">AI Analyst</span>
           </button>
 
           {/* User Session Profile Badge */}

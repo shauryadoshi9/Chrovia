@@ -9,10 +9,11 @@ import {
   ShieldAlert, 
   Sparkles, 
   Cpu, 
-  Network 
+  Network,
+  UserPlus
 } from "lucide-react";
 
-export default function Sidebar({ activeTab, setActiveTab, counts = {} }) {
+export default function Sidebar({ activeTab, setActiveTab, counts = {}, onOpenAddCustomer }) {
   const navItems = [
     { id: "overview", label: "Executive Overview", icon: LayoutDashboard, category: "Analytics" },
     { id: "customer360", label: "Customer 360", icon: UserCheck, category: "Analytics", badge: counts.customers },
@@ -30,6 +31,17 @@ export default function Sidebar({ activeTab, setActiveTab, counts = {} }) {
     <aside className="w-64 bg-[var(--bg-panel)] border-r border-[var(--border-panel)] p-4 flex flex-col justify-between shrink-0 min-h-[calc(100vh-60px)] transition-colors">
       <div className="space-y-6">
         
+        {/* Add Customer Quick Button */}
+        {onOpenAddCustomer && (
+          <button
+            onClick={onOpenAddCustomer}
+            className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-extrabold flex items-center justify-center space-x-2 shadow-md shadow-indigo-600/20 transition-all cursor-pointer"
+          >
+            <UserPlus className="w-4 h-4" />
+            <span>＋ Add New Customer</span>
+          </button>
+        )}
+
         {/* Navigation Section */}
         <div>
           <h3 className="px-3 text-[10px] font-extrabold uppercase tracking-wider text-[var(--text-dim)] mb-2">

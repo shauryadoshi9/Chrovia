@@ -4,12 +4,11 @@ import {
   Users, 
   AlertTriangle, 
   TrendingDown, 
-  ShieldAlert, 
-  Repeat, 
-  Clock, 
   ChevronRight, 
   Sparkles,
-  Zap
+  Zap,
+  ShieldAlert,
+  UserPlus
 } from "lucide-react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { CHANNEL_METRICS } from "../data/mockData";
@@ -20,7 +19,8 @@ export default function ExecutiveOverview({
   issues = [], 
   escalations = [],
   onNavigateTab,
-  onSelectCustomer
+  onSelectCustomer,
+  onOpenAddCustomer
 }) {
   const totalEvents = events.length;
   const totalCustomers = customers.length;
@@ -47,6 +47,16 @@ export default function ExecutiveOverview({
         </div>
 
         <div className="flex items-center space-x-3 shrink-0">
+          {onOpenAddCustomer && (
+            <button
+              onClick={onOpenAddCustomer}
+              className="px-3.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center space-x-1.5 shadow-md shadow-indigo-600/30 cursor-pointer"
+            >
+              <UserPlus className="w-4 h-4" />
+              <span>＋ Add Customer</span>
+            </button>
+          )}
+
           <button
             onClick={() => onNavigateTab("ai_analyst")}
             className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-lg text-xs font-bold flex items-center space-x-2 shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
@@ -229,18 +239,31 @@ export default function ExecutiveOverview({
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <ShieldAlert className="w-5 h-5 text-rose-500" />
-            <h3 className="text-base font-bold text-[var(--text-main)]">High Friction & Churn Risk Customer Watchlist</h3>
+            <h3 className="text-base font-bold text-[var(--text-main)]">Customer Profiles Watchlist ({customers.length})</h3>
           </div>
-          <button 
-            onClick={() => onNavigateTab("churn")}
-            className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-semibold"
-          >
-            View Churn Intelligence →
-          </button>
+          
+          <div className="flex items-center space-x-3">
+            {onOpenAddCustomer && (
+              <button
+                onClick={onOpenAddCustomer}
+                className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-bold flex items-center space-x-1"
+              >
+                <UserPlus className="w-3.5 h-3.5" />
+                <span>＋ Add Customer</span>
+              </button>
+            )}
+
+            <button 
+              onClick={() => onNavigateTab("churn")}
+              className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-semibold"
+            >
+              View Churn Intelligence →
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {customers.slice(0, 3).map(customer => (
+          {customers.map(customer => (
             <div
               key={customer.id}
               onClick={() => {
@@ -274,7 +297,7 @@ export default function ExecutiveOverview({
                 <div>
                   <span className="text-[var(--text-dim)] block text-[10px]">Churn Risk</span>
                   <span className={`badge ${
-                    customer.churn_risk === "CRITICAL"
+                    customer.churn_risk === "CRITICAL" || customer.churn_risk === "HIGH"
                       ? "bg-rose-500/20 text-rose-600 dark:text-rose-300 border-rose-500/40"
                       : "bg-amber-500/20 text-amber-600 dark:text-amber-300 border-amber-500/40"
                   }`}>

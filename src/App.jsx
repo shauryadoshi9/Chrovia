@@ -43,17 +43,14 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCustomerId, setSelectedCustomerId] = useState("1001");
 
-  // Global Platform State
   const [customers, setCustomers] = useState(INITIAL_CUSTOMERS);
   const [events, setEvents] = useState(INITIAL_EVENTS);
   const [issues, setIssues] = useState(INITIAL_ISSUES);
   const [escalations, setEscalations] = useState(INITIAL_ESCALATIONS);
 
-  // Modals state
   const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
   const [customerModal, setCustomerModal] = useState({ isOpen: false, mode: "add", customerData: null });
 
-  // Auth Action Handlers
   const handleAuthenticate = (userData) => {
     setUserSession(userData);
     setIsAuthModalOpen(false);
@@ -77,7 +74,6 @@ export default function App() {
     setCurrentPage("dashboard");
   };
 
-  // Save Add/Edit Customer Handler
   const handleSaveCustomer = (updatedCustomer) => {
     if (customerModal.mode === "add") {
       setCustomers(prev => [updatedCustomer, ...prev]);
@@ -89,7 +85,6 @@ export default function App() {
     setCustomerModal({ isOpen: false, mode: "add", customerData: null });
   };
 
-  // Live Event Ingestion Handler
   const handleAddLiveEvent = (newEvent) => {
     setEvents(prev => [newEvent, ...prev]);
 
@@ -144,6 +139,7 @@ export default function App() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         onOpenSimulator={() => setIsSimulatorOpen(true)}
+        onOpenAddCustomer={() => setCustomerModal({ isOpen: true, mode: "add", customerData: null })}
         eventsCount={events.length}
         userSession={userSession}
         onLogout={handleLogout}
@@ -162,6 +158,7 @@ export default function App() {
             escalations: escalations.filter(e => e.status !== "RESOLVED").length,
             repeatIssues: issues.filter(i => i.repeat_contact_count > 1).length
           }}
+          onOpenAddCustomer={() => setCustomerModal({ isOpen: true, mode: "add", customerData: null })}
         />
 
         <main className="flex-1 p-6 overflow-y-auto max-h-[calc(100vh-60px)]">
@@ -174,6 +171,7 @@ export default function App() {
               escalations={escalations}
               onNavigateTab={setActiveTab}
               onSelectCustomer={setSelectedCustomerId}
+              onOpenAddCustomer={() => setCustomerModal({ isOpen: true, mode: "add", customerData: null })}
             />
           )}
 
