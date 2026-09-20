@@ -1,4 +1,4 @@
-// Mock Data based on Chrovia_PS4_Complete_Report.docx (Section 18 & platform specs)
+// Mock Data for Chrovia Customer Journey Platform
 
 export const INITIAL_CUSTOMERS = [
   {
