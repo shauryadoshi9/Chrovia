@@ -15,8 +15,8 @@
     <b>Unify fragmented web clicks, mobile sessions, call center logs, store check-ins, and support chats into a single deterministic identity graph with real-time friction scoring and AI analytics.</b>
   </p>
 
+  <a href="#-live-screenshots--ui-showcase"><b>UI Screenshots</b></a> •
   <a href="#-key-features"><b>Key Features</b></a> •
-  <a href="#-live-demo--preview"><b>Live Preview</b></a> •
   <a href="#%EF%B8%8F-architecture--engine-design"><b>Architecture</b></a> •
   <a href="#-quick-start"><b>Quick Start</b></a> •
   <a href="#-customer-360-case-study"><b>Case Study</b></a>
@@ -34,6 +34,22 @@ Modern enterprise customer interactions are severely fragmented across siloed co
 - Visits a **Physical Retail Store** or initiates a **Live Support Chat**.
 
 **Chrovia** solves cross-channel journey fragmentation by ingesting normalized cross-channel telemetry, applying a **Deterministic + Levenshtein Fuzzy Identity Solver**, running a **7-Factor Journey Friction Engine**, and providing natural language **AI Journey Analytics**.
+
+---
+
+## 📸 Live Screenshots & UI Showcase
+
+### 1. Public Home Landing Page
+![Chrovia Landing Page](public/screenshots/landing_page.jpg)
+
+### 2. Executive Overview Dashboard & Real-Time Event Stream
+![Chrovia Executive Overview](public/screenshots/executive_overview.jpg)
+
+### 3. Customer 360 View & Cross-Channel Identity Graph
+![Chrovia Customer 360](public/screenshots/customer_360.jpg)
+
+### 4. Journey Explorer & Interactive Timeline Replay Player
+![Chrovia Journey Explorer](public/screenshots/journey_explorer.jpg)
 
 ---
 
