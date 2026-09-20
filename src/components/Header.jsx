@@ -30,7 +30,7 @@ export default function Header({
             <div className="flex items-center space-x-2">
               <h1 className="text-xl font-black tracking-wider text-[var(--text-main)]">CHROVIA</h1>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-500 border border-indigo-500/30">
-                PS-4 PLATFORM
+                INTELLIGENCE PLATFORM
               </span>
             </div>
             <p className="text-xs text-[var(--text-muted)] font-medium hidden sm:block">

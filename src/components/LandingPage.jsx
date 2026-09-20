@@ -96,7 +96,7 @@ export default function LandingPage({ onLaunchApp, onOpenAuth, theme, onToggleTh
             <div className="flex items-center space-x-2">
               <span className="text-xl font-black text-[var(--text-main)] tracking-wider">CHROVIA</span>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30">
-                PS-4 PLATFORM
+                INTELLIGENCE PLATFORM
               </span>
             </div>
             <p className="text-[11px] text-[var(--text-muted)] font-medium hidden sm:block">
@@ -245,7 +245,7 @@ export default function LandingPage({ onLaunchApp, onOpenAuth, theme, onToggleTh
               Platform Architecture & Intelligence Modules
             </h2>
             <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-xl mx-auto">
-              Engineered according to the PS-4 Cross-Channel Journey Stitching specifications
+              Engineered according to Cross-Channel Journey Stitching specifications
             </p>
           </div>
 
