@@ -78,14 +78,14 @@ export default function CustomerManageModal({
         {/* Header */}
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-500">
-            {mode === "add" ? <UserPlus className="w-5 h-5" /> : <Edit3 className="w-5 h-5" />}
+            <UserPlus className="w-5 h-5" />
           </div>
           <div>
             <h2 className="text-lg font-extrabold text-[var(--text-main)]">
-              {mode === "add" ? "Add New Customer Profile" : `Edit Profile: ${customerData?.name}`}
+              Add New Customer Profile
             </h2>
             <p className="text-xs text-[var(--text-muted)]">
-              Dynamic Database Management & Identity Graph Control
+              Dynamic Customer Database Management & Identity Graph Creation
             </p>
           </div>
         </div>

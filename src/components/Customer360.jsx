@@ -9,8 +9,7 @@ import {
   AlertCircle, 
   Activity, 
   ChevronDown,
-  UserPlus,
-  Edit3
+  UserPlus
 } from "lucide-react";
 import { calculateJourneyFriction } from "../engine/frictionEngine";
 
@@ -22,8 +21,7 @@ export default function Customer360({
   issues = [], 
   escalations = [],
   onNavigateTab,
-  onOpenAddCustomer,
-  onOpenEditCustomer
+  onOpenAddCustomer
 }) {
   const currentCustomer = customers.find(c => c.id === selectedCustomerId) || customers[0];
 
@@ -62,16 +60,6 @@ export default function Customer360({
               </select>
               <ChevronDown className="w-4 h-4 text-[var(--text-dim)] absolute right-2.5 top-2.5 pointer-events-none" />
             </div>
-
-            {/* Edit Selected Customer Button */}
-            <button
-              onClick={() => onOpenEditCustomer(currentCustomer)}
-              className="px-3 py-2 rounded-lg bg-[var(--bg-inner)] hover:bg-[var(--bg-panel-hover)] border border-[var(--border-panel)] text-[var(--text-main)] text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer"
-              title="Edit Name, Email, Phone, Loyalty ID & Identity Graph"
-            >
-              <Edit3 className="w-3.5 h-3.5 text-indigo-500" />
-              <span>Edit Profile</span>
-            </button>
 
             {/* Add New Customer Button */}
             <button
@@ -278,13 +266,6 @@ export default function Customer360({
               </p>
             </div>
             
-            <button
-              onClick={() => onOpenEditCustomer(currentCustomer)}
-              className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline flex items-center space-x-1"
-            >
-              <Edit3 className="w-3.5 h-3.5" />
-              <span>Manage Identity Nodes →</span>
-            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

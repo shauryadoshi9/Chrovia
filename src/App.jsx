@@ -185,7 +185,6 @@ export default function App() {
               escalations={escalations}
               onNavigateTab={setActiveTab}
               onOpenAddCustomer={() => setCustomerModal({ isOpen: true, mode: "add", customerData: null })}
-              onOpenEditCustomer={(cust) => setCustomerModal({ isOpen: true, mode: "edit", customerData: cust })}
             />
           )}
 
